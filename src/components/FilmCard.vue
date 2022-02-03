@@ -15,7 +15,7 @@
       </p>
       <p>
         Voto:
-        <span>{{ film.vote_average }}</span>
+        <i v-for="index in Math.round(film.vote_average / 2)" :key="index" class="fas fa-star"></i>
       </p>
       <div v-if="film.overview!==''">
         <p>Recensione:</p>
@@ -64,9 +64,16 @@ export default {
     background-color: $card-background;
     color: $text-color;
     padding: 20px;
+    overflow: auto;
 
     p {
       margin-bottom: 5px;
+
+      i{
+        color:$golden-color;
+        font-size: 20px;
+        margin: 0 5px;
+      }
     }
   }
   img {
