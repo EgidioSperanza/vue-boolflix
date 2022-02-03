@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-container">
     <div v-for="film in filteredFilmsList" :key="film.id">
       <film-card :film="film" />
     </div>
@@ -19,5 +19,13 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.main-container{
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap:20px;
+  justify-content: center;
+}
+</style>

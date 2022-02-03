@@ -22,16 +22,16 @@ export default {
     }
   },
   methods: {
-    searchByTitle(title) {
+    searchByTitle(title, familyFilter) {
       axios
         .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=e0151c8f32093eec292358373e03c7c1&language=it&query=${title}`,
+          `https://api.themoviedb.org/3/search/movie?api_key=e0151c8f32093eec292358373e03c7c1&language=it&adult=false&query=${title}&include_adult=${!familyFilter}`,
+          
         )
         .then((response) => {
+
           this.filteredFilmsList = response.data.results
         })
-        console.log(this.filteredFilmsList)
-        return this.filteredFilmsList
     },
   },
 }
