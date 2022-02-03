@@ -1,0 +1,19 @@
+@import './variables.scss';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+    background-color: $body-color;
+    min-height: 100vh;
+}
+header {
+  min-height: 100px;
+  background-color: $header-color;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
