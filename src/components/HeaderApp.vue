@@ -2,8 +2,8 @@
   <header>
     <h1>Boolflix</h1>
     <div class="search">
-      <input type="text" />
-      <button>Search</button>
+      <input type="text" v-model="stringToSearch"/>
+      <button @click="$emit('searchByTitle', stringToSearch)">Search</button>
     </div>
   </header>
 </template>
@@ -11,6 +11,11 @@
 <script>
 export default {
   name: 'HeaderApp',
+  data(){
+    return{
+      stringToSearch:''
+    }
+  },
   props: {},
 }
 </script>
