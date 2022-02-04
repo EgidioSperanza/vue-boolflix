@@ -27,7 +27,7 @@
           </span>
           <i
             v-else
-            v-for="index in Math.round(result.vote_average / 2)"
+            v-for="index in voteConversion(result.vote_average)"
             :key="index"
             class="fas fa-star"
           ></i>
@@ -60,6 +60,11 @@ export default {
   },
   props: {
     result: Object,
+  },
+  methods: {
+    voteConversion(vote){
+      return Math.round(vote/2)
+    }
   },
 }
 </script>

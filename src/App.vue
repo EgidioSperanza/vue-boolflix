@@ -6,7 +6,7 @@
       :filteredSeriesList="filteredSeriesList"
       :msgNoResult="msgNoResult"
     />
-    <popular-trend :filteredPopularFilms="filteredPopularFilms" />
+    <popular-trend :filteredPopularFilms="filteredPopularFilms" :filteredPopularSeries="filteredPopularSeries"/>
   </div>
 </template>
 
@@ -29,11 +29,12 @@ export default {
       filteredFilmsList: [],
       filteredSeriesList: [],
       filteredPopularFilms: [],
+      filteredPopularSeries: [],
       msgNoResult: '',
     }
   },
   methods: {
-    async callApi(queries, type, action) {
+    async callApi(queries, type, myRequest) {
       if (queries.query !== '') {
         let params = {
           api_key: this.apiKey,
@@ -42,9 +43,8 @@ export default {
         this.queries = queries
         params = { ...params, ...queries }
         console.log(params)
-        action="https://api.themoviedb.org/3/search/"
         const result = await axios
-          .get(`${action}${type}`, { params })
+          .get(`${myRequest}${type}`, { params })
           .then((response) => {
             if (response.data.total_results === 0) {
               this.msgNoResult =
@@ -63,22 +63,36 @@ export default {
       return []
     },
     async searchFilmsByTitle(queries) {
-      this.filteredFilmsList = await this.callApi(queries, 'movie')
+      this.filteredFilmsList = await this.callApi(queries, 'movie','https://api.themoviedb.org/3/search/')
     },
     async searchSeriesByTitle(queries) {
-      this.filteredSeriesList = await this.callApi(queries, 'tv')
+      this.filteredSeriesList = await this.callApi(queries, 'tv','https://api.themoviedb.org/3/search/')
     },
     searchResult(queries) {
       this.searchFilmsByTitle(queries)
       this.searchSeriesByTitle(queries)
     },
-    showPopularFilms(){
-      let popularMovies = {
-        query: 'get-popular-movies',
-        include_adult: false,
-      }
-      this.filteredPopularFilms =  this.callApi(popularMovies, '', 'https://api.themoviedb.org/3/get-popular-movies')
+    async searchPopularFilms(queries, myRequest) {
+      this.filteredPopularFilms = await this.callApi(queries, '', myRequest)
     },
+    async searchPopularSeries(queries, myRequest) {
+      this.filteredPopularSeries = await this.callApi(queries, '', myRequest)
+    },
+  },
+  mounted() {
+    let popular = {
+      api_key: this.apiKey,
+      include_adult: false,
+      language: 'it',
+    }
+    this.searchPopularFilms(
+      popular,
+      'https://api.themoviedb.org/3/movie/popular',
+    )
+    this.searchPopularSeries(
+      popular,
+      'https://api.themoviedb.org/3/tv/popular',
+    )
   },
 }
 </script>

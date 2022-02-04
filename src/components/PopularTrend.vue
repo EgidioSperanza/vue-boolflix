@@ -10,14 +10,31 @@
         <result-card :result="film" />
       </div>
     </div>
+
+    <h1>Le Serie Tv più amate del momento!!!</h1>
+    <div class="main-container">
+      <div
+        class="result-card"
+        v-for="serie in filteredPopularSeries"
+        :key="serie.id"
+      >
+        <result-card :result="serie" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import ResultCard from './ResultCard'
+
 export default {
-  name: 'Popular',
+  name: 'PopularTrend',
+  components: {
+    ResultCard,
+  },
   props: {
     filteredPopularFilms: Array,
+    filteredPopularSeries: Array,
   },
 }
 </script>
