@@ -81,7 +81,7 @@ header {
     }
     input[type='text'] {
       height: 50px;
-      width: 200px;
+      width: 170px;
     }
     button {
       height: 50px;
