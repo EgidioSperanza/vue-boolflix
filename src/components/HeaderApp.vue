@@ -3,7 +3,7 @@
     <h1>Boolflix</h1>
     <div class="search">
       <label for="family-filter">
-        <span v-if="familyFilterIsActivated">Family Filter On</span>
+        <span v-if="!queries.include_adult">Family Filter On</span>
         <span v-else class="off">Family Filter Off</span>
       </label>
       <input
@@ -16,10 +16,10 @@
         <input
           type="text"
           placeholder="Search Title"
-          v-model="stringToSearch"
-          @keyup.enter="searchFilm"
+          v-model="queries.query"
+          @keyup.enter="searchResult"
         />
-        <button @click="searchFilm">
+        <button @click="searchResult">
           Search
         </button>
       </div>
@@ -32,22 +32,24 @@ export default {
   name: 'HeaderApp',
   data() {
     return {
-      stringToSearch: '',
-      familyFilterIsActivated: true,
+      queries:{
+        query: '',
+        include_adult: false,
+
+      }
     }
   },
   props: {},
   methods: {
-    searchFilm() {
+    searchResult() {
         this.$emit(
-          'searchByTitle',
-          this.stringToSearch,
-          this.familyFilterIsActivated,
+          'searchResult',
+          this.queries,
         )
     },
     familyFilter() {
-      this.familyFilterIsActivated = !this.familyFilterIsActivated
-      this.searchFilm()
+      this.queries.include_adult = !this.queries.include_adult
+      this.searchResult()
     },
   },
 }
