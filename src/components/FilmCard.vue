@@ -13,7 +13,8 @@
       </p>
       <p class="flags">
         Lingua:
-        <img :src="require(`@/assets/flags/${film.original_language}.png`)"  :alt="film.original_language">
+        <img v-if="languageFlag!==null" :src="`${languageFlag}`"  :alt="film.original_language">
+        <span v-else>{{film.original_language}}</span>
       </p>
       <p>
         Voto:
@@ -45,6 +46,11 @@
 <script>
 export default {
   name: 'FilmCard',
+  data(){
+    return {
+      languageFlag:`./flags/${this.film.original_language}.png`
+    }
+  },
   props: {
     film: Object,
   },
