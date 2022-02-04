@@ -12,3 +12,12 @@ body{
     min-height: 100vh;
 }
 
+h1{
+  padding:20px;
+  color:$title-color;
+}
+
+.error{
+  color:$off-text-color;
+}
+

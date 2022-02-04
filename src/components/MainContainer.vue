@@ -1,24 +1,35 @@
 <template>
-  <div v-if="filteredSearchList.length !== 0" class="main-container">
-    <div class="film-card" v-for="film in filteredSearchList" :key="film.id">
-      <film-card :film="film" />
+  <div v-if="filteredFilmsList.length !== 0 || filteredSeriesList.length !== 0">
+    <h1>La tua Ricerca ha prodotto i seguenti risultati!!!</h1>
+    <div class="main-container">
+      <div class="result-card" v-for="film in filteredFilmsList" :key="film.id">
+        <result-card :result="film" />
+      </div>
+      <div
+        class="result-card"
+        v-for="serie in filteredSeriesList"
+        :key="serie.id"
+      >
+        <result-card :result="serie" />
+      </div>
     </div>
   </div>
   <div v-else>
-    <h1>{{ msgNoResult }}</h1>
+    <h1 class="error">{{ msgNoResult }}</h1>
   </div>
 </template>
 
 <script>
-import FilmCard from './FilmCard'
+import ResultCard from './ResultCard'
 
 export default {
   name: 'MainContainer',
   components: {
-    FilmCard,
+    ResultCard,
   },
   props: {
-    filteredSearchList: Array,
+    filteredFilmsList: Array,
+    filteredSeriesList: Array,
     msgNoResult: String,
   },
 }
@@ -27,19 +38,12 @@ export default {
 @import '@/style/variables.scss';
 
 .main-container {
-  margin: 0 auto;
-  width: 90%;
-  // width: 1300px;//xl
-  // width: 990px;//lg
-  // width: 620px;//md
-  // width: 320px;//XS
-  padding: 20px;
+  margin: 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  overflow-x: scroll;
 
-  .film-card {
-    width: 300px;
+  .result-card {
+    min-width: 300px;
     height: 450px;
     cursor: pointer;
     margin-bottom: 20px;
