@@ -10,7 +10,7 @@
         type="checkbox"
         name="family-filter"
         checked
-        @click="familyFilter()"
+        @click="familyFilter"
       />
       <div>
         <input
@@ -39,15 +39,15 @@ export default {
   props: {},
   methods: {
     searchFilm() {
-      this.$emit(
-        'searchByTitle',
-        this.stringToSearch,
-        this.familyFilterIsActivated,
-      )
+        this.$emit(
+          'searchByTitle',
+          this.stringToSearch,
+          this.familyFilterIsActivated,
+        )
     },
     familyFilter() {
       this.familyFilterIsActivated = !this.familyFilterIsActivated
-      if (this.stringToSearch !== '') this.searchFilm()
+      this.searchFilm()
     },
   },
 }

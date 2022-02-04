@@ -3,21 +3,28 @@
     <div class="card">
       <p>
         Titolo:
-        <span>{{ film.title }}</span>
+        <span v-if="film.title">{{ film.title }}</span>
+        <span v-else>{{ film.name }}</span>
       </p>
       <p>
         Titolo Originale:
-        <span>{{ film.original_title }}</span>
+        <span v-if="film.original_title">{{ film.original_title }}</span>
+        <span v-else>{{ film.original_name }}</span>
       </p>
-      <p>
+      <p class="flags">
         Lingua:
-        <span>{{ film.original_language }}</span>
+        <img :src="require(`@/assets/flags/${film.original_language}.png`)"  :alt="film.original_language">
       </p>
       <p>
         Voto:
-        <i v-for="index in Math.round(film.vote_average / 2)" :key="index" class="fas fa-star"></i>
+        <span v-if="film.vote_averare=''|| film.vote_average===0"> Nessun Voto da Mostrare</span>
+        <i v-else
+          v-for="index in Math.round(film.vote_average / 2)"
+          :key="index"
+          class="fas fa-star"
+        ></i>
       </p>
-      <div v-if="film.overview!==''">
+      <div v-if="film.overview !== ''">
         <p>Recensione:</p>
         <p>{{ film.overview }}</p>
       </div>
@@ -49,9 +56,8 @@ export default {
 
 .film {
   position: relative;
-  width: 300px;
-  height: 450px;
-  cursor: pointer;
+  width: 100%;
+  height: 100%;
 
   &:hover .card {
     display: block;
@@ -69,15 +75,25 @@ export default {
     p {
       margin-bottom: 5px;
 
-      i{
-        color:$golden-color;
+      i {
+        color: $golden-color;
         font-size: 20px;
         margin: 0 5px;
       }
     }
   }
+  p.flags{
+    display: flex;
+    align-items: center;
+    > img{
+    width:30px;
+    height: 20px;
+    margin-left: 5px;
+    }
+  }
   img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
   }
   .no-poster {
