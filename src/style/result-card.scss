@@ -1,0 +1,59 @@
+@import './variables.scss';
+
+.search-result {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  &:hover .card {
+    display: block;
+  }
+  .card {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: $card-background;
+    color: $text-color;
+    padding: 20px;
+    overflow: auto;
+
+    p {
+      margin-bottom: 5px;
+
+      i {
+        color: $golden-color;
+        font-size: 20px;
+        margin: 0 5px;
+      }
+    }
+  }
+  p.flags {
+    display: flex;
+    align-items: center;
+    > img {
+      width: 30px;
+      height: 20px;
+      margin-left: 5px;
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .no-poster {
+    width: 100%;
+    height: 100%;
+    border: 1px solid $card-background;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: $no-poster-background;
+
+    span {
+      font-size: 30px;
+    }
+  }
+}

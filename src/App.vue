@@ -5,8 +5,12 @@
       :filteredFilmsList="filteredFilmsList"
       :filteredSeriesList="filteredSeriesList"
       :msgNoResult="msgNoResult"
+      :nResults="nResults"
     />
-    <popular-trend :filteredPopularFilms="filteredPopularFilms" :filteredPopularSeries="filteredPopularSeries"/>
+    <popular-trend
+      :filteredPopularFilms="filteredPopularFilms"
+      :filteredPopularSeries="filteredPopularSeries"
+    />
   </div>
 </template>
 
@@ -31,6 +35,7 @@ export default {
       filteredPopularFilms: [],
       filteredPopularSeries: [],
       msgNoResult: '',
+      nResults:0,
     }
   },
   methods: {
@@ -40,19 +45,15 @@ export default {
           api_key: this.apiKey,
           language: 'it',
         }
-        this.queries = queries
         params = { ...params, ...queries }
-        console.log(params)
         const result = await axios
           .get(`${myRequest}${type}`, { params })
           .then((response) => {
             if (response.data.total_results === 0) {
               this.msgNoResult =
                 'Nessun Titolo soddisfa i criteri della ricerca'
-              console.log('Risponde', 'vuoto')
               return []
             } else {
-              console.log('Risponde', response.data.result)
               return response.data.results
             }
           })
@@ -63,14 +64,26 @@ export default {
       return []
     },
     async searchFilmsByTitle(queries) {
-      this.filteredFilmsList = await this.callApi(queries, 'movie','https://api.themoviedb.org/3/search/')
+      this.filteredFilmsList = await this.callApi(
+        queries,
+        'movie',
+        'https://api.themoviedb.org/3/search/',
+      )
+      this.nResults += this.filteredFilmsList.length
     },
     async searchSeriesByTitle(queries) {
-      this.filteredSeriesList = await this.callApi(queries, 'tv','https://api.themoviedb.org/3/search/')
+      this.filteredSeriesList = await this.callApi(
+        queries,
+        'tv',
+        'https://api.themoviedb.org/3/search/',
+      )
+      this.nResults += this.filteredSeriesList.length
     },
-    searchResult(queries) {
-      this.searchFilmsByTitle(queries)
-      this.searchSeriesByTitle(queries)
+    async searchResult(queries) {
+      this.nResults=0
+      await this.searchFilmsByTitle(queries)
+      await this.searchSeriesByTitle(queries)
+      console.log(this.nResults + '*300 =' + this.nResults*300)
     },
     async searchPopularFilms(queries, myRequest) {
       this.filteredPopularFilms = await this.callApi(queries, '', myRequest)
@@ -89,10 +102,12 @@ export default {
       popular,
       'https://api.themoviedb.org/3/movie/popular',
     )
-    this.searchPopularSeries(
-      popular,
-      'https://api.themoviedb.org/3/tv/popular',
-    )
+    this.searchPopularSeries(popular, 'https://api.themoviedb.org/3/tv/popular')
+  },
+  computed: {
+    nResultsComputed(){
+      return this.nResults
+    }
   },
 }
 </script>

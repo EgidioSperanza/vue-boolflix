@@ -39,18 +39,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/style/variables.scss';
+@import '@/style/response-api-sliders.scss';
 
-.main-container {
-  margin: 20px;
-  display: flex;
-  overflow-x: scroll;
-
-  .result-card {
-    min-width: 300px;
-    height: 450px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-}
 </style>
