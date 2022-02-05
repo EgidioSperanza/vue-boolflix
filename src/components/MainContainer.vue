@@ -48,7 +48,7 @@ export default {
     return {
       sliderPosition: 0,
       position: 0,
-      viewportWidth: window.innerWidth-40,//Slider margin
+      viewportWidth: window.innerWidth-60,//Slider margin
     }
   },
   // //DEBUG
@@ -82,7 +82,7 @@ export default {
       this.position = this.sliderPosition * -1
     },
     onResize() {
-      this.viewportWidth = window.innerWidth-40//Slider margin
+      this.viewportWidth = window.innerWidth-60//Slider margin
       this.sliderPosition=1
       this.position=this.sliderPosition
     },

@@ -1,6 +1,11 @@
 <template>
   <header>
-    <h1>Boolflix</h1>
+    <h1>
+      B
+      <i class="fas fa-tv"></i>
+      <i class="fas fa-tv"></i>
+      lflix
+    </h1>
     <div class="search">
       <label for="family-filter">
         <span v-if="!queries.include_adult">Family Filter On</span>
@@ -32,20 +37,16 @@ export default {
   name: 'HeaderApp',
   data() {
     return {
-      queries:{
+      queries: {
         query: '',
         include_adult: false,
-
-      }
+      },
     }
   },
   props: {},
   methods: {
     searchResult() {
-        this.$emit(
-          'searchResult',
-          this.queries,
-        )
+      this.$emit('searchResult', this.queries)
     },
     familyFilter() {
       this.queries.include_adult = !this.queries.include_adult
@@ -68,6 +69,10 @@ header {
     color: $title-color;
     text-transform: uppercase;
     font-size: 50px;
+
+    i {
+      font-size: 40px;
+    }
   }
   .search {
     display: flex;

@@ -1,65 +1,25 @@
 @import './variables.scss';
+@import './scrollbar-x.scss';
 
 .main-container {
-  height: 480px;
+  height: 450px;
   margin: 20px;
   overflow: hidden;
   position: relative;
 
-  .slider{
+  .slider {
     position: absolute;
-    height: 480px;
+    height: 450px;
     top: 0;
     left: 0;
     display: flex;
-    background-color: white;
-  }
-
-    .scroll-btn {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translate(0, -50%);
-      width: 300px;
-      height: 22px;
-      border-radius: 0 10px 10px 0;
-      background-color: $title-color;
-      cursor: grab;
-
-      &:active{
-        cursor: grabbing;
-      }
-    .scroll-btn.hide {
-      display: none;
-    }
-    .scroll-btn.grabbing {
-      cursor: grabbing;
-    }
-  }
-
-  .result-card {
-    min-width: 300px;
-    height: 450px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .show-more {
-    width: 300px;
-    background-color: $header-color;
-    color: $text-color;
-    line-height: 450px;
-    font-size: 20px;
-    overflow: hidden;
-    text-align: center;
-
-    &:hover {
-      font-size: 30px;
-      color: $title-color;
-    }
   }
 }
-input {
-  width: calc(100vw - 60px);
-  margin: 0 20px;
+
+.result-card {
+  min-width: 300px;
+  height: 450px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 

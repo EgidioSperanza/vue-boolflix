@@ -10,6 +10,8 @@
     <popular-trend
       :filteredPopularFilms="filteredPopularFilms"
       :filteredPopularSeries="filteredPopularSeries"
+      :nPopularFilmsResults="nPopularFilmsResults"
+      :nPopularSeriesResults="nPopularSeriesResults"
     />
   </div>
 </template>
@@ -35,7 +37,9 @@ export default {
       filteredPopularFilms: [],
       filteredPopularSeries: [],
       msgNoResult: '',
-      nResults:0,
+      nResults: 0,
+      nPopularFilmsResults: 0,
+      nPopularSeriesResults: 0,
     }
   },
   methods: {
@@ -80,16 +84,18 @@ export default {
       this.nResults += this.filteredSeriesList.length
     },
     async searchResult(queries) {
-      this.nResults=0
+      this.nResults = 0
       await this.searchFilmsByTitle(queries)
       await this.searchSeriesByTitle(queries)
-      console.log(this.nResults + '*300 =' + this.nResults*300)
+      console.log(this.nResults + '*300 =' + this.nResults * 300)
     },
     async searchPopularFilms(queries, myRequest) {
       this.filteredPopularFilms = await this.callApi(queries, '', myRequest)
+      this.nPopularFilmsResults += this.filteredPopularFilms.length
     },
     async searchPopularSeries(queries, myRequest) {
       this.filteredPopularSeries = await this.callApi(queries, '', myRequest)
+      this.nPopularSeriesResults += this.filteredPopularSeries.length
     },
   },
   mounted() {
@@ -105,9 +111,15 @@ export default {
     this.searchPopularSeries(popular, 'https://api.themoviedb.org/3/tv/popular')
   },
   computed: {
-    nResultsComputed(){
+    nResultsComputed() {
       return this.nResults
-    }
+    },
+    nPopularFilmsResultsComputed() {
+      return this.nPopularFilmsResults
+    },
+    nPopularSeriesResultsComputed() {
+      return this.nPopularSeriesResults
+    },
   },
 }
 </script>

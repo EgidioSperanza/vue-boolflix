@@ -1,5 +1,5 @@
 $header-color:#000;
-$body-color:#333;
+$body-color:rgb(36, 31, 31);
 $title-color:rgb(190, 0, 0);
 $card-background:rgba(0, 0, 0, 0.9);
 $text-color: #FFF;
@@ -7,9 +7,8 @@ $no-poster-background:#C0C0C0;
 $off-text-color:#C0C0C0;
 $golden-color: rgb(218, 165, 32);
 
-//breakpoint 
-$breakpoint-desktop-xxl: 1400px;
-$breakpoint-desktop-xl: 1200px;
-$breakpoint-desktop:992px;
-$breakpoint-two-card: 660px;
-$breakpoint-smartphone:576px;
+//SLIDER
+$btn-slider: rgb(148, 7, 7);
+$focus-btn-slider: #C0C0C0;
+$border-btn-slider:#000;
+$bkg-slider:#000;
