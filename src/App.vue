@@ -43,6 +43,11 @@ export default {
     }
   },
   methods: {
+    // METHOD TO CALL THE API {{REQUEST}}
+    // {{TYPE}} (movie tv and other)
+    // ADDING THE AUTHENTICATION KEY,
+    // THE LANGUAGE AND ANY OTHER {{QUERIES}}
+    // (STRING TO SEARCH, FAMILY FILTER ETC ...)
     async callApi(queries, type, myRequest) {
       if (queries.query !== '') {
         let params = {
@@ -67,6 +72,8 @@ export default {
       }
       return []
     },
+    // FILL THE DATA ARRAY FILMS VIA THE GENERIC API CALL
+    // ADDS THE NUMBER OF ITEMS TO A DATA
     async searchFilmsByTitle(queries) {
       this.filteredFilmsList = await this.callApi(
         queries,
@@ -75,6 +82,8 @@ export default {
       )
       this.nResults += this.filteredFilmsList.length
     },
+    // FILL THE DATA ARRAY SERIES VIA THE GENERIC API CALL
+    // ADDS THE NUMBER OF ITEMS TO A DATA
     async searchSeriesByTitle(queries) {
       this.filteredSeriesList = await this.callApi(
         queries,
@@ -83,22 +92,30 @@ export default {
       )
       this.nResults += this.filteredSeriesList.length
     },
+    // THROUGH A CHILD COMPONENT WE PASS A SERIES OF QUERIES
+    //  TO OBTAIN FROM A STRING A LIST OF FILMS AND TV SERIES
+    // NB ONLY THE FIRST PAGE OF THE POSSIBLE RESULTS
+    // TODO: ADD TO THE CHILD COMPONENT SHOWING THE LISTS A LAST ELEMENT
+    //  THAT FROM TIME TO TIME CALLS THE API THROUGH THE PARENT TO ADD THE
+    //  NEXT PAGES OF POSSIBLE RESULTS
     async searchResult(queries) {
       this.nResults = 0
       await this.searchFilmsByTitle(queries)
       await this.searchSeriesByTitle(queries)
-      console.log(this.nResults + '*300 =' + this.nResults * 300)
     },
+    // API CALL FOR TREND FILMS LIST
     async searchPopularFilms(queries, myRequest) {
       this.filteredPopularFilms = await this.callApi(queries, '', myRequest)
       this.nPopularFilmsResults += this.filteredPopularFilms.length
     },
+    // API CALL FOR TREND FILMS LIST
     async searchPopularSeries(queries, myRequest) {
       this.filteredPopularSeries = await this.callApi(queries, '', myRequest)
       this.nPopularSeriesResults += this.filteredPopularSeries.length
     },
   },
   mounted() {
+    // AUTOMATIC-DEFAULT PAGE FILLING WITH TWO LISTS REGARDING TREND FILMS AND TV SERIES
     let popular = {
       api_key: this.apiKey,
       include_adult: false,
@@ -111,6 +128,8 @@ export default {
     this.searchPopularSeries(popular, 'https://api.themoviedb.org/3/tv/popular')
   },
   computed: {
+    // WE KEEP THE NUMBERS OF THE LIST ELEMENTS UPDATED FOR
+    // A VIEW AND SCROLL RELATED TO THE VIEWPORT 
     nResultsComputed() {
       return this.nResults
     },
