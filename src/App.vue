@@ -6,12 +6,19 @@
       :filteredSeriesList="filteredSeriesList"
       :msgNoResult="msgNoResult"
       :nResults="nResults"
+      :sliderPosition="sliderPosition"
+      :position="position"
+      :viewportWidth="viewportWidth"
+      @changePosition="changePosition"
     />
     <popular-trend
       :filteredPopularFilms="filteredPopularFilms"
       :filteredPopularSeries="filteredPopularSeries"
-      :nPopularFilmsResults="nPopularFilmsResults"
-      :nPopularSeriesResults="nPopularSeriesResults"
+      :nResults="nResults"
+      :sliderPosition="sliderPosition"
+      :position="position"
+      :viewportWidth="viewportWidth"
+      @changePosition="changePosition"
     />
   </div>
 </template>
@@ -37,11 +44,19 @@ export default {
       filteredPopularFilms: [],
       filteredPopularSeries: [],
       msgNoResult: '',
-      nResults: 0,
-      nPopularFilmsResults: 0,
-      nPopularSeriesResults: 0,
+      nResults: [0, 0, 0],
+      sliderPosition: [1, 1, 1],
+      position: [0, 0, 0],
+      viewportWidth: window.innerWidth - 60, //Slider margin
     }
   },
+  // //DEBUG
+  watch: {
+    viewportWidth(newWidth, oldWidth) {
+      console.log(`it changed to ${newWidth} from ${oldWidth}`)
+    },
+  },
+
   methods: {
     // METHOD TO CALL THE API {{REQUEST}}
     // {{TYPE}} (movie tv and other)
@@ -49,6 +64,9 @@ export default {
     // THE LANGUAGE AND ANY OTHER {{QUERIES}}
     // (STRING TO SEARCH, FAMILY FILTER ETC ...)
     async callApi(queries, type, myRequest) {
+      // DO WE KNOW WHAT TO LOOK FOR?
+      // IN CASE OF SEARCH WITHOUT STRING, IT WILL NOT MAKE THE CALL
+      // UNLESS YOU ENTER FURTHER FIELDS IN {{QUERIES}}
       if (queries.query !== '') {
         let params = {
           api_key: this.apiKey,
@@ -58,6 +76,7 @@ export default {
         const result = await axios
           .get(`${myRequest}${type}`, { params })
           .then((response) => {
+            // IF THERE ARE NO RESULTS?
             if (response.data.total_results === 0) {
               this.msgNoResult =
                 'Nessun Titolo soddisfa i criteri della ricerca'
@@ -68,6 +87,7 @@ export default {
           })
         return result
       } else {
+        // NO STRING TO SEARCH
         this.msgNoResult = 'Digita Qualcosa per effettuare una ricerca'
       }
       return []
@@ -80,7 +100,7 @@ export default {
         'movie',
         'https://api.themoviedb.org/3/search/',
       )
-      this.nResults += this.filteredFilmsList.length
+      this.nResults[0] += this.filteredFilmsList.length
     },
     // FILL THE DATA ARRAY SERIES VIA THE GENERIC API CALL
     // ADDS THE NUMBER OF ITEMS TO A DATA
@@ -90,7 +110,7 @@ export default {
         'tv',
         'https://api.themoviedb.org/3/search/',
       )
-      this.nResults += this.filteredSeriesList.length
+      this.nResults[0] += this.filteredSeriesList.length
     },
     // THROUGH A CHILD COMPONENT WE PASS A SERIES OF QUERIES
     //  TO OBTAIN FROM A STRING A LIST OF FILMS AND TV SERIES
@@ -99,45 +119,62 @@ export default {
     //  THAT FROM TIME TO TIME CALLS THE API THROUGH THE PARENT TO ADD THE
     //  NEXT PAGES OF POSSIBLE RESULTS
     async searchResult(queries) {
-      this.nResults = 0
+      this.nResults[0] = 0
       await this.searchFilmsByTitle(queries)
       await this.searchSeriesByTitle(queries)
+      this.sliderPosition[0] = 1
+      this.position[0] = this.sliderPosition[0]
     },
     // API CALL FOR TREND FILMS LIST
     async searchPopularFilms(queries, myRequest) {
-      this.filteredPopularFilms = await this.callApi(queries, '', myRequest)
-      this.nPopularFilmsResults += this.filteredPopularFilms.length
+      this.filteredPopularFilms = await this.callApi(queries, '', myRequest) //TYPE=''
+      this.nResults[1] += this.filteredPopularFilms.length
     },
     // API CALL FOR TREND FILMS LIST
     async searchPopularSeries(queries, myRequest) {
-      this.filteredPopularSeries = await this.callApi(queries, '', myRequest)
-      this.nPopularSeriesResults += this.filteredPopularSeries.length
+      this.filteredPopularSeries = await this.callApi(queries, '', myRequest) //TYPE=''
+      this.nResults[2] += this.filteredPopularSeries.length
+    },
+    // I RECEIVE AND EXECUTE - EMIT
+    changePosition(i) {
+      this.position[i] = this.sliderPosition[i] * -1
+    },
+    onResize() {
+      this.viewportWidth = window.innerWidth - 60 //Slider margin
+      if (this.filteredFilmsList.length > 0 || this.filteredSeriesList > 0) {
+        this.sliderPosition[0] = 1
+        this.position[0] = this.sliderPosition[0]
+      }
     },
   },
   mounted() {
     // AUTOMATIC-DEFAULT PAGE FILLING WITH TWO LISTS REGARDING TREND FILMS AND TV SERIES
     let popular = {
-      api_key: this.apiKey,
-      include_adult: false,
-      language: 'it',
+      include_adult: false, //ADDED IN QUERIES FOR OBTAIN A RESULT
     }
     this.searchPopularFilms(
       popular,
       'https://api.themoviedb.org/3/movie/popular',
     )
     this.searchPopularSeries(popular, 'https://api.themoviedb.org/3/tv/popular')
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize)
+    })
   },
   computed: {
     // WE KEEP THE NUMBERS OF THE LIST ELEMENTS UPDATED FOR
-    // A VIEW AND SCROLL RELATED TO THE VIEWPORT 
+    // A VIEW AND SCROLL RELATED TO THE VIEWPORT
     nResultsComputed() {
       return this.nResults
     },
-    nPopularFilmsResultsComputed() {
-      return this.nPopularFilmsResults
+    computedPosition() {
+      return this.position
     },
-    nPopularSeriesResultsComputed() {
-      return this.nPopularSeriesResults
+    computedSliderPosition() {
+      return this.sliderPosition
+    },
+    computedViewport() {
+      return this.viewportWidth
     },
   },
 }

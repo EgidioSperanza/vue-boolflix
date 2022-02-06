@@ -5,7 +5,7 @@
   >
     <h1>La tua Ricerca ha prodotto i seguenti risultati!!!</h1>
     <div class="main-container">
-      <div class="slider" :style="{ left: position + 'px' }">
+      <div class="slider" :style="{ left: position[0] + 'px' }">
         <div
           class="result-card"
           v-for="film in filteredFilmsList"
@@ -26,10 +26,10 @@
       type="range"
       min="1"
       :max="
-        nResults * 300 > viewportWidth ? nResults * 300 - viewportWidth : nResults * 300
+        nResults[0] * 300 > viewportWidth ? nResults[0] * 300 - viewportWidth : nResults[0] * 300
       "
-      v-model="sliderPosition"
-      @input="changePosition"
+      v-model="sliderPosition[0]"
+      @input="$emit('changePosition', 0)"
       class="slider"
       id="myRange"
     />
@@ -44,19 +44,6 @@ import ResultCard from './ResultCard'
 
 export default {
   name: 'MainContainer',
-  data() {
-    return {
-      sliderPosition: 0,
-      position: 0,
-      viewportWidth: window.innerWidth-60,//Slider margin
-    }
-  },
-  // //DEBUG
-  // watch: {
-  //   viewportWidth(newWidth, oldWidth) {
-  //     console.log(`it changed to ${newWidth} from ${oldWidth}`) 
-  //   },
-  // },
   components: {
     ResultCard,
   },
@@ -64,36 +51,10 @@ export default {
     filteredFilmsList: Array,
     filteredSeriesList: Array,
     msgNoResult: String,
-    nResults: Number,
-  },
-  computed: {
-    computedPosition() {
-      return this.position
-    },
-    computedMax() {
-      return this.nResults
-    },
-    computedViewport() {
-      return this.viewport
-    },
-  },
-  methods: {
-    changePosition() {
-      this.position = this.sliderPosition * -1
-    },
-    onResize() {
-      this.viewportWidth = window.innerWidth-60//Slider margin
-      this.sliderPosition=1
-      this.position=this.sliderPosition
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize)
-    })
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    nResults: Array,
+    position:Array,
+    sliderPosition:Array,
+    viewportWidth:Number,
   },
 }
 </script>
