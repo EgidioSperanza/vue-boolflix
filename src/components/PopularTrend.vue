@@ -8,7 +8,7 @@
           v-for="film in filteredPopularFilms"
           :key="film.id"
         >
-          <result-card :result="film" />
+          <result-card :result="film" :resultTrendCast="resultTrendCast" />
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
           v-for="serie in filteredPopularSeries"
           :key="serie.id"
         >
-          <result-card :result="serie" />
+          <result-card :result="serie" :resultTrendCast="resultTrendCast" />
         </div>
       </div>
     </div>
@@ -65,6 +65,7 @@ export default {
   props: {
     filteredPopularFilms: Array,
     filteredPopularSeries: Array,
+    resultTrendCast:Array,
     nResults: Array,
     position: Array,
     sliderPosition: Array,

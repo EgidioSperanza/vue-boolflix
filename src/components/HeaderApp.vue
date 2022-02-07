@@ -40,13 +40,14 @@ export default {
       queries: {
         query: '',
         include_adult: false,
+        lastSearch:''
       },
     }
   },
   props: {},
   methods: {
     searchResult() {
-      this.$emit('searchResult', this.queries)
+        this.$emit('searchResult', this.queries)
     },
     familyFilter() {
       this.queries.include_adult = !this.queries.include_adult

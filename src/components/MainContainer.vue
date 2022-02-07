@@ -11,14 +11,14 @@
           v-for="film in filteredFilmsList"
           :key="film.id"
         >
-          <result-card :result="film" />
+          <result-card :result="film" :resultCast="resultCast"/>
         </div>
         <div
           class="result-card"
           v-for="serie in filteredSeriesList"
           :key="serie.id"
         >
-          <result-card :result="serie" />
+          <result-card :result="serie" :resultCast="resultCast"/>
         </div>
       </div>
     </div>
@@ -49,6 +49,7 @@ export default {
   },
   props: {
     filteredFilmsList: Array,
+    resultCast: Array,
     filteredSeriesList: Array,
     msgNoResult: String,
     nResults: Array,

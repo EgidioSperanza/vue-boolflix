@@ -4,6 +4,7 @@
     <main-container
       :filteredFilmsList="filteredFilmsList"
       :filteredSeriesList="filteredSeriesList"
+      :resultCast="resultCast"
       :msgNoResult="msgNoResult"
       :nResults="nResults"
       :sliderPosition="sliderPosition"
@@ -14,6 +15,7 @@
     <popular-trend
       :filteredPopularFilms="filteredPopularFilms"
       :filteredPopularSeries="filteredPopularSeries"
+      :resultTrendCast="resultTrendCast"
       :nResults="nResults"
       :sliderPosition="sliderPosition"
       :position="position"
@@ -41,8 +43,10 @@ export default {
       apiKey: 'e0151c8f32093eec292358373e03c7c1',
       filteredFilmsList: [],
       filteredSeriesList: [],
+      resultCast: [],
       filteredPopularFilms: [],
       filteredPopularSeries: [],
+      resultTrendCast: [],
       msgNoResult: '',
       nResults: [0, 0, 0],
       sliderPosition: [1, 1, 1],
@@ -51,11 +55,11 @@ export default {
     }
   },
   // //DEBUG
-  watch: {
-    viewportWidth(newWidth, oldWidth) {
-      console.log(`it changed to ${newWidth} from ${oldWidth}`)
-    },
-  },
+  // watch: {
+  //   viewportWidth(newWidth, oldWidth) {
+  //     console.log(`it changed to ${newWidth} from ${oldWidth}`)
+  //   },
+  // },
 
   methods: {
     // METHOD TO CALL THE API {{REQUEST}}
@@ -72,6 +76,7 @@ export default {
           api_key: this.apiKey,
           language: 'it',
         }
+        this.lastSearch = queries.query
         params = { ...params, ...queries }
         const result = await axios
           .get(`${myRequest}${type}`, { params })
@@ -92,8 +97,24 @@ export default {
       }
       return []
     },
+    //NEW CALL TO THE API FOR CAST
+    async callApiCast(request, type, id) {
+      let params = {
+        api_key: this.apiKey,
+        language: 'it',
+      }
+      const result = await axios
+        .get(`https://api.themoviedb.org/3/${type}/${id}/${request}`, {
+          params,
+        })
+        .then((response) => {
+          return response.data
+        })
+      return result
+    },
     // FILL THE DATA ARRAY FILMS VIA THE GENERIC API CALL
     // ADDS THE NUMBER OF ITEMS TO A DATA
+    // NEW CALL TO THE API FOR CAST MEMBERS
     async searchFilmsByTitle(queries) {
       this.filteredFilmsList = await this.callApi(
         queries,
@@ -101,9 +122,16 @@ export default {
         'https://api.themoviedb.org/3/search/',
       )
       this.nResults[0] += this.filteredFilmsList.length
+      this.searchedCast(this.filteredFilmsList, this.resultCast, 'movie')
     },
-    // FILL THE DATA ARRAY SERIES VIA THE GENERIC API CALL
-    // ADDS THE NUMBER OF ITEMS TO A DATA
+    async searchedCast(array, dataArray, type) {
+      await array.forEach((element) => {
+        this.castList(element, type, dataArray)
+      })
+    },
+    async castList(element, type, dataArray) {
+      dataArray.push(await this.callApiCast('credits', type, element.id))
+    },
     async searchSeriesByTitle(queries) {
       this.filteredSeriesList = await this.callApi(
         queries,
@@ -111,6 +139,7 @@ export default {
         'https://api.themoviedb.org/3/search/',
       )
       this.nResults[0] += this.filteredSeriesList.length
+      this.searchedCast(this.filteredSeriesList, this.resultCast, 'tv')
     },
     // THROUGH A CHILD COMPONENT WE PASS A SERIES OF QUERIES
     //  TO OBTAIN FROM A STRING A LIST OF FILMS AND TV SERIES
@@ -119,6 +148,7 @@ export default {
     //  THAT FROM TIME TO TIME CALLS THE API THROUGH THE PARENT TO ADD THE
     //  NEXT PAGES OF POSSIBLE RESULTS
     async searchResult(queries) {
+      this.resultCast = []
       this.nResults[0] = 0
       await this.searchFilmsByTitle(queries)
       await this.searchSeriesByTitle(queries)
@@ -129,11 +159,17 @@ export default {
     async searchPopularFilms(queries, myRequest) {
       this.filteredPopularFilms = await this.callApi(queries, '', myRequest) //TYPE=''
       this.nResults[1] += this.filteredPopularFilms.length
+      this.searchedCast(
+        this.filteredPopularFilms,
+        this.resultTrendCast,
+        'movie',
+      )
     },
     // API CALL FOR TREND FILMS LIST
     async searchPopularSeries(queries, myRequest) {
       this.filteredPopularSeries = await this.callApi(queries, '', myRequest) //TYPE=''
       this.nResults[2] += this.filteredPopularSeries.length
+      this.searchedCast(this.filteredPopularSeries, this.resultTrendCast, 'tv')
     },
     // I RECEIVE AND EXECUTE - EMIT
     changePosition(i) {
@@ -156,6 +192,7 @@ export default {
       popular,
       'https://api.themoviedb.org/3/movie/popular',
     )
+
     this.searchPopularSeries(popular, 'https://api.themoviedb.org/3/tv/popular')
     this.$nextTick(() => {
       window.addEventListener('resize', this.onResize)

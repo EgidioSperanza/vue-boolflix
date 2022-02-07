@@ -43,6 +43,25 @@
         </div>
       </div>
       <p v-else>Nessuna recensione disponibile</p>
+      <div v-for="cast in resultCast" :key="cast.id">
+        <div v-if="cast.id === result.id">
+          <div v-for="actor in cast.cast" :key="actor.id">
+            <p v-if="actor.order <= 5">
+              {{ actor.name }} nel ruolo di {{ actor.character }}
+            </p>
+          </div>
+        </div>
+      </div>
+            <div v-for="cast in resultTrendCast" :key="cast.id">
+        <div v-if="cast.id === result.id">
+          <div v-for="actor in cast.cast" :key="actor.id">
+            <p v-if="actor.order <= 5">
+              {{ actor.name }} nel ruolo di {{ actor.character }}
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
     <img
       v-if="result.poster_path !== null"
@@ -68,6 +87,8 @@ export default {
   },
   props: {
     result: Object,
+    resultCast: Array,
+    resultTrendCast: Array,
   },
   methods: {
     voteConversion(vote) {
@@ -83,5 +104,4 @@ export default {
 
 <style scoped lang="scss">
 @import '@/style/result-card.scss';
-
 </style>
