@@ -2,12 +2,8 @@
   <div>
     <p class="flags">
       Lingua:
-      <img
-        v-if="languageFlag !== null"
-        :src="languageFlag"
-        :alt="language"
-      />
-      <span v-else>{{language }}</span>
+      <img v-if="languageFlag !== null" :src="languageFlag" :alt="language" />
+      <span v-else>{{ language }}</span>
     </p>
   </div>
 </template>
@@ -27,14 +23,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-  p.flags {
-    display: flex;
-    align-items: center;
-    > img {
-      width: 30px;
-      height: 20px;
-      margin-left: 5px;
-    }
+p.flags {
+  display: flex;
+  align-items: center;
+  > img {
+    width: 30px;
+    height: 20px;
+    margin-left: 5px;
   }
+}
+p {
+  margin-bottom: 10px;
+}
 </style>

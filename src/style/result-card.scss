@@ -18,6 +18,10 @@
     padding: 20px;
     overflow: auto;
 
+    i {
+      cursor: pointer;
+      margin-left: 5px;
+    }
     .overview {
       display: flex;
       align-items: center;
@@ -25,16 +29,8 @@
         margin: 0 10px 10px;
       }
     }
-
-    p {
-      margin-bottom: 10px;
-
-      button {
-        margin-left: 10px;
-      }
-    }
   }
-  .alternate-cast{
+  .alternate-cast {
     color: $alternate-cast;
   }
   img {
@@ -55,13 +51,37 @@
     span {
       font-size: 30px;
     }
-
   }
+
+  p {
+    margin-bottom: 10px;
+  }
+
   button.card-btn {
     background-color: $bkg-color-btn;
     border-radius: 5px;
     padding: 2px 3px;
     border: 1px solid $border-color-btn;
     cursor: zoom-in;
+    margin-left: 10px;
+  }
+  button.card-btn.hide-overview {
+    cursor: zoom-out;
+    margin-left: 0;
+  }
+  .more-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    button {
+      background-color: $bkg-color-btn;
+      border-radius: 5px;
+      padding: 2px 3px;
+      border: 1px solid $border-color-btn;
+      cursor: zoom-in;
+    }
+  }
+  .overview-text {
+    text-align: justify;
   }
 }

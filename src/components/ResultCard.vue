@@ -6,21 +6,18 @@
         <span v-if="result.title">{{ result.title }}</span>
         <span v-else>{{ result.name }}</span>
       </p>
-      <p>
+      <p
+        v-if="
+          result.title !== result.original_title ||
+          result.name !== result.original_name
+        "
+      >
         Titolo Originale:
         <span v-if="result.original_title">{{ result.original_title }}</span>
         <span v-else>{{ result.original_name }}</span>
       </p>
-      <language-flag :language="result.original_language"/>
-      <p>
-        Voto:
-        <span v-if="(result.vote_average === '' || result.vote_average === 0)">
-          Nessun Voto da Mostrare
-        </span>
-        <span>
-          <vote-average :vote="result.vote_average" />
-        </span>
-      </p>
+      <language-flag :language="result.original_language" />
+      <vote-average :vote="result.vote_average" />
       <div
         :class="!isShowOverview ? 'overview' : ''"
         v-if="result.overview !== ''"
@@ -30,24 +27,21 @@
           Show overview
         </button>
         <div v-else>
-          <p>
+          <p class="overview-text">
             {{ result.overview }}
-            <button class="card-btn" @click="overviewStatus">
+            <button class="card-btn hide-overview" @click="overviewStatus">
               Hide overview
             </button>
           </p>
         </div>
       </div>
       <p v-else>Nessuna recensione disponibile</p>
-      <p>Cast:</p>
       <div v-for="cast in resultCast" :key="cast.id">
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
-              <span :class="actor.order%2===0 ? 'alternate-cast' : ''">{{ actor.name }}
-              <span v-if="actor.character">
-                nel ruolo di {{ actor.character }}
-              </span>
+              <span :class="actor.order % 2 === 0 ? 'alternate-cast' : ''">
+                {{ actor.name }}
               </span>
             </p>
           </div>
@@ -57,14 +51,15 @@
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
-              <span :class="actor.order%2===0 ? 'alternate-cast' : ''">{{ actor.name }}
-              <span v-if="actor.character">
-                nel ruolo di {{ actor.character }}
-              </span>
+              <span :class="actor.order % 2 === 0 ? 'alternate-cast' : ''">
+                {{ actor.name }}
               </span>
             </p>
           </div>
         </div>
+      </div>
+      <div class="more-info">
+        <button @click="$emit('thisResultInfo', result)">Vai alla Scheda Film</button>
       </div>
     </div>
     <img

@@ -1,10 +1,18 @@
 <template>
   <div>
-    <i
-      v-for="index in voteConversion(this.vote)"
-      :key="index"
-      class="fas fa-star"
-    ></i>
+    <p>
+      Voto:
+      <span v-if="(vote === '' || vote === 0)">
+        Nessun Voto da Mostrare
+      </span>
+      <span v-else>
+        <i
+          v-for="index in voteConversion(this.vote)"
+          :key="index"
+          class="fas fa-star"
+        ></i>
+      </span>
+    </p>
   </div>
 </template>
 <script>
@@ -23,6 +31,9 @@ export default {
 
 <style scoped lang="scss">
 @import '@/style/variables.scss';
+    p {
+      margin-bottom: 10px;
+    }
 
 i {
   color: $golden-color;

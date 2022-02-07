@@ -7,16 +7,14 @@
       lflix
     </h1>
     <div class="search">
-      <label for="family-filter">
-        <span v-if="!queries.include_adult">Family Filter On</span>
-        <span v-else class="off">Family Filter Off</span>
-      </label>
-      <input
-        type="checkbox"
-        name="family-filter"
-        checked
-        @click="familyFilter"
-      />
+      <div v-if="!queries.include_adult">
+        <span>Family Filter On</span>
+        <i class="fas fa-check-square" @click="familyFilter"></i>
+      </div>
+      <div v-else>
+        <span class="off">Family Filter Off</span>
+        <i class="fas fa-square" @click="familyFilter"></i>
+      </div>
       <div>
         <input
           type="text"
@@ -25,7 +23,7 @@
           @keyup.enter="searchResult"
         />
         <button @click="searchResult">
-          Search
+          <i class="fas fa-search"></i>
         </button>
       </div>
     </div>
@@ -40,18 +38,19 @@ export default {
       queries: {
         query: '',
         include_adult: false,
-        lastSearch:''
       },
     }
   },
   props: {},
   methods: {
     searchResult() {
-        this.$emit('searchResult', this.queries)
+      this.$emit('searchResult', this.queries)
     },
     familyFilter() {
       this.queries.include_adult = !this.queries.include_adult
-      this.searchResult()
+      if (this.queries.query !== '') {
+        this.searchResult()
+      }
     },
   },
 }
@@ -60,43 +59,53 @@ export default {
 <style scoped lang="scss">
 @import '@/style/variables.scss';
 header {
-  min-height: 100px;
-  background-color: $header-color;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 20px;
-  h1 {
-    color: $title-color;
-    text-transform: uppercase;
-    font-size: 50px;
+  align-items: center;
+  background-color: $header-color;
 
-    i {
-      font-size: 40px;
-    }
+  h1 {
+    font-size: 50px;
   }
+
   .search {
+    margin-right: 10px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    label {
-      margin: 10px 0;
+
+    > div > span,
+    > div > i {
+      margin-right: 10px;
+    }
+
+    > div > span {
       color: $text-color;
+      &.off {
+        color: $off-text-color;
+      }
     }
-    input[type='checkbox'] {
-      margin: 10px 20px;
+
+    > div > i{
+      color:$input-border-col;
+      cursor: pointer;
     }
+
     input[type='text'] {
+      margin-right: 10px;
       height: 50px;
-      width: 170px;
+      background-color: $bkg-input;
+      padding-left: 5px;
+      border: 1px solid $input-border-col;
+      color: $input-text-color;
     }
+
     button {
-      height: 50px;
-      margin-left: 20px;
-      padding: 0 20px;
-    }
-    .off {
-      color: $off-text-color;
+      width: 25px;
+      height: 25px;
+      background-color: $bkg-color-btn;
+      border:1px solid $button-border-color;
+      cursor:pointer;
     }
   }
 }

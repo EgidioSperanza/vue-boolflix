@@ -7,18 +7,22 @@
   padding: 0;
   box-sizing: border-box;
 }
-body{
-    font-family: 'Roboto', sans-serif;
-    background-color: $body-color;
-    min-height: 100vh;
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: $body-color;
+  min-height: 100vh;
 }
 
-h1{
-  padding:20px;
-  color:$title-color;
+h1 {
+  padding: 20px 100px;
+  color: $title-color;
 }
 
-.error{
-  color:$off-text-color;
+.error {
+  color: $off-text-color;
 }
 
+input[type='text']:focus,
+textarea:focus {
+  outline: none;
+}

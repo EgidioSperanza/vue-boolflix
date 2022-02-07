@@ -11,22 +11,33 @@
           v-for="film in filteredFilmsList"
           :key="film.id"
         >
-          <result-card :result="film" :resultCast="resultCast"/>
+          <result-card
+            :result="film"
+            :resultCast="resultCast"
+            @thisResultInfo="thisResultInfo"
+          />
         </div>
         <div
           class="result-card"
           v-for="serie in filteredSeriesList"
           :key="serie.id"
         >
-          <result-card :result="serie" :resultCast="resultCast"/>
+          <result-card
+            :result="serie"
+            :resultCast="resultCast"
+            @thisResultInfo="thisResultInfo"
+          />
         </div>
       </div>
     </div>
-    <input v-if="nResults[0] >1"
+    <input
+      v-if="nResults[0] > 1"
       type="range"
       min="1"
       :max="
-        nResults[0] * 300 > viewportWidth ? nResults[0] * 300 - viewportWidth : (nResults[0] * 300)-300
+        nResults[0] * 300 > viewportWidth
+          ? nResults[0] * 300 - viewportWidth
+          : nResults[0] * 300 - 300
       "
       v-model="sliderPosition[0]"
       @input="$emit('changePosition', 0)"
@@ -53,9 +64,14 @@ export default {
     filteredSeriesList: Array,
     msgNoResult: String,
     nResults: Array,
-    position:Array,
-    sliderPosition:Array,
-    viewportWidth:Number,
+    position: Array,
+    sliderPosition: Array,
+    viewportWidth: Number,
+  },
+  methods: {
+    thisResultInfo(id) {
+      this.$emit('thisResultInfo', id)
+    },
   },
 }
 </script>

@@ -3,7 +3,7 @@
 
 .main-container {
   height: 450px;
-  margin: 20px;
+  margin: 20px 100px;
   overflow: hidden;
   position: relative;
 
@@ -23,3 +23,19 @@
   margin-bottom: 20px;
 }
 
+.info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: aliceblue;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}

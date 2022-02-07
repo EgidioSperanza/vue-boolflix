@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div v-if="!isShowingInfo">
     <header-app @searchResult="searchResult" />
     <main-container
       :filteredFilmsList="filteredFilmsList"
@@ -11,6 +12,7 @@
       :position="position"
       :viewportWidth="viewportWidth"
       @changePosition="changePosition"
+      @thisResultInfo="thisResultInfo"
     />
     <popular-trend
       :filteredPopularFilms="filteredPopularFilms"
@@ -21,7 +23,13 @@
       :position="position"
       :viewportWidth="viewportWidth"
       @changePosition="changePosition"
+      @thisResultInfo="thisResultInfo"
     />
+    </div>
+    <div class="info" v-else>
+      ciao sono {{currentId}}
+      <button @click="goBack">Torna indietro</button>
+    </div>
   </div>
 </template>
 
@@ -52,6 +60,8 @@ export default {
       sliderPosition: [1, 1, 1],
       position: [0, 0, 0],
       viewportWidth: window.innerWidth - 60, //Slider margin
+      isShowingInfo:false,
+      currentId:0,
     }
   },
   // //DEBUG
@@ -191,6 +201,14 @@ export default {
         this.position[0] = this.sliderPosition[0]
       }
     },
+     thisResultInfo(result){
+       this.isShowingInfo=true
+       this.currentId=result.id
+     },
+     goBack(){
+       this.isShowingInfo=false
+       this.currentId=0
+     }
   },
   mounted() {
     // AUTOMATIC-DEFAULT PAGE FILLING WITH TWO LISTS REGARDING TREND FILMS AND TV SERIES
@@ -228,4 +246,5 @@ export default {
 
 <style lang="scss">
 @import './style/main.scss';
+@import './style/current-info.scss';
 </style>
