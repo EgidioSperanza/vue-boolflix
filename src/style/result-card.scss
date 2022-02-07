@@ -32,17 +32,10 @@
       button {
         margin-left: 10px;
       }
-
     }
   }
-  p.flags {
-    display: flex;
-    align-items: center;
-    > img {
-      width: 30px;
-      height: 20px;
-      margin-left: 5px;
-    }
+  .alternate-cast{
+    color: $alternate-cast;
   }
   img {
     width: 100%;

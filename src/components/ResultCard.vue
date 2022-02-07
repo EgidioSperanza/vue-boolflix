@@ -11,15 +11,7 @@
         <span v-if="result.original_title">{{ result.original_title }}</span>
         <span v-else>{{ result.original_name }}</span>
       </p>
-      <p class="flags">
-        Lingua:
-        <img
-          v-if="languageFlag !== null"
-          :src="`${languageFlag}`"
-          :alt="result.original_language"
-        />
-        <span v-else>{{ result.original_language }}</span>
-      </p>
+      <language-flag :language="result.original_language"/>
       <p>
         Voto:
         <span v-if="(result.vote_average === '' || result.vote_average === 0)">
@@ -52,9 +44,10 @@
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
-              {{ actor.name }}
+              <span :class="actor.order%2===0 ? 'alternate-cast' : ''">{{ actor.name }}
               <span v-if="actor.character">
                 nel ruolo di {{ actor.character }}
+              </span>
               </span>
             </p>
           </div>
@@ -64,7 +57,11 @@
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
-              {{ actor.name }} nel ruolo di {{ actor.character }}
+              <span :class="actor.order%2===0 ? 'alternate-cast' : ''">{{ actor.name }}
+              <span v-if="actor.character">
+                nel ruolo di {{ actor.character }}
+              </span>
+              </span>
             </p>
           </div>
         </div>
@@ -85,15 +82,16 @@
 
 <script>
 import VoteAverage from './VoteAverage.vue'
+import LanguageFlag from './LanguageFlag.vue'
 
 export default {
   name: 'ResultCard',
   components: {
     VoteAverage,
+    LanguageFlag,
   },
   data() {
     return {
-      languageFlag: `./flags/${this.result.original_language}.png`,
       isShowOverview: false,
     }
   },

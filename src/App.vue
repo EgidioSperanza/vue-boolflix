@@ -158,7 +158,10 @@ export default {
     // API CALL FOR TREND FILMS LIST
     async searchPopularFilms(queries, myRequest) {
       this.filteredPopularFilms = await this.callApi(queries, '', myRequest) //TYPE=''
-      this.nResults[1] += this.filteredPopularFilms.length
+      this.nResults[1] = this.filteredPopularFilms.length
+      this.sliderPosition[1] = 1
+      this.position[1] = this.sliderPosition[1]
+
       this.searchedCast(
         this.filteredPopularFilms,
         this.resultTrendCast,
@@ -168,8 +171,10 @@ export default {
     // API CALL FOR TREND FILMS LIST
     async searchPopularSeries(queries, myRequest) {
       this.filteredPopularSeries = await this.callApi(queries, '', myRequest) //TYPE=''
-      this.nResults[2] += this.filteredPopularSeries.length
+      this.nResults[2] = this.filteredPopularSeries.length
       this.searchedCast(this.filteredPopularSeries, this.resultTrendCast, 'tv')
+      this.sliderPosition[2] = 1
+      this.position[2] = this.sliderPosition[2]
     },
     // I RECEIVE AND EXECUTE - EMIT
     changePosition(i) {
@@ -177,6 +182,10 @@ export default {
     },
     onResize() {
       this.viewportWidth = window.innerWidth - 60 //Slider margin
+      this.sliderPosition[1] = 1
+      this.position[1] = this.sliderPosition[1]
+      this.sliderPosition[2] = 1
+      this.position[2] = this.sliderPosition[2]
       if (this.filteredFilmsList.length > 0 || this.filteredSeriesList > 0) {
         this.sliderPosition[0] = 1
         this.position[0] = this.sliderPosition[0]
