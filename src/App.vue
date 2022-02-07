@@ -27,7 +27,8 @@
     />
     </div>
     <div class="info" v-else>
-      ciao sono {{currentId}}
+      <single-card-info :result="result"/>
+      ciao sono {{result.id}}
       <button @click="goBack">Torna indietro</button>
     </div>
   </div>
@@ -38,6 +39,7 @@ import axios from 'axios'
 import HeaderApp from './components/HeaderApp.vue'
 import MainContainer from './components/MainContainer.vue'
 import PopularTrend from './components/PopularTrend.vue'
+import SingleCardInfo from './components/SingleCardInfo.vue'
 
 export default {
   name: 'App',
@@ -45,6 +47,7 @@ export default {
     HeaderApp,
     MainContainer,
     PopularTrend,
+    SingleCardInfo
   },
   data() {
     return {
@@ -61,7 +64,7 @@ export default {
       position: [0, 0, 0],
       viewportWidth: window.innerWidth - 60, //Slider margin
       isShowingInfo:false,
-      currentId:0,
+      result:{},
     }
   },
   // //DEBUG
@@ -203,7 +206,7 @@ export default {
     },
      thisResultInfo(result){
        this.isShowingInfo=true
-       this.currentId=result.id
+       this.result=result
      },
      goBack(){
        this.isShowingInfo=false
