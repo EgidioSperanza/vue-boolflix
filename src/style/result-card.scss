@@ -18,14 +18,21 @@
     padding: 20px;
     overflow: auto;
 
-    p {
-      margin-bottom: 5px;
-
-      i {
-        color: $golden-color;
-        font-size: 20px;
-        margin: 0 5px;
+    .overview {
+      display: flex;
+      align-items: center;
+      button {
+        margin: 0 10px 10px;
       }
+    }
+
+    p {
+      margin-bottom: 10px;
+
+      button {
+        margin-left: 10px;
+      }
+
     }
   }
   p.flags {
@@ -55,5 +62,13 @@
     span {
       font-size: 30px;
     }
+
+  }
+  button.card-btn {
+    background-color: $bkg-color-btn;
+    border-radius: 5px;
+    padding: 2px 3px;
+    border: 1px solid $border-color-btn;
+    cursor: zoom-in;
   }
 }

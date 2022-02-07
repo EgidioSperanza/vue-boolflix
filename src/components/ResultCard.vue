@@ -25,34 +25,42 @@
         <span v-if="(result.vote_average === '' || result.vote_average === 0)">
           Nessun Voto da Mostrare
         </span>
-        <i
-          v-else
-          v-for="index in voteConversion(result.vote_average)"
-          :key="index"
-          class="fas fa-star"
-        ></i>
+        <span>
+          <vote-average :vote="result.vote_average" />
+        </span>
       </p>
-      <div v-if="result.overview !== ''">
+      <div
+        :class="!isShowOverview ? 'overview' : ''"
+        v-if="result.overview !== ''"
+      >
         <p>Recensione:</p>
-        <button v-if="!isShowOverview" @click="overviewStatus">
+        <button class="card-btn" v-if="!isShowOverview" @click="overviewStatus">
           Show overview
         </button>
         <div v-else>
-          <p>{{ result.overview }}</p>
-          <button @click="overviewStatus">Hide overview</button>
+          <p>
+            {{ result.overview }}
+            <button class="card-btn" @click="overviewStatus">
+              Hide overview
+            </button>
+          </p>
         </div>
       </div>
       <p v-else>Nessuna recensione disponibile</p>
+      <p>Cast:</p>
       <div v-for="cast in resultCast" :key="cast.id">
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
-              {{ actor.name }} nel ruolo di {{ actor.character }}
+              {{ actor.name }}
+              <span v-if="actor.character">
+                nel ruolo di {{ actor.character }}
+              </span>
             </p>
           </div>
         </div>
       </div>
-            <div v-for="cast in resultTrendCast" :key="cast.id">
+      <div v-for="cast in resultTrendCast" :key="cast.id">
         <div v-if="cast.id === result.id">
           <div v-for="actor in cast.cast" :key="actor.id">
             <p v-if="actor.order <= 5">
@@ -61,7 +69,6 @@
           </div>
         </div>
       </div>
-
     </div>
     <img
       v-if="result.poster_path !== null"
@@ -77,8 +84,13 @@
 </template>
 
 <script>
+import VoteAverage from './VoteAverage.vue'
+
 export default {
   name: 'ResultCard',
+  components: {
+    VoteAverage,
+  },
   data() {
     return {
       languageFlag: `./flags/${this.result.original_language}.png`,
@@ -91,10 +103,6 @@ export default {
     resultTrendCast: Array,
   },
   methods: {
-    voteConversion(vote) {
-      let convertedVote = Math.round(vote / 2)
-      return convertedVote
-    },
     overviewStatus() {
       this.isShowOverview = !this.isShowOverview
     },

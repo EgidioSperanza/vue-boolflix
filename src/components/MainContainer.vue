@@ -22,11 +22,11 @@
         </div>
       </div>
     </div>
-    <input
+    <input v-if="nResults[0] >1"
       type="range"
       min="1"
       :max="
-        nResults[0] * 300 > viewportWidth ? nResults[0] * 300 - viewportWidth : nResults[0] * 300
+        nResults[0] * 300 > viewportWidth ? nResults[0] * 300 - viewportWidth : (nResults[0] * 300)-300
       "
       v-model="sliderPosition[0]"
       @input="$emit('changePosition', 0)"
