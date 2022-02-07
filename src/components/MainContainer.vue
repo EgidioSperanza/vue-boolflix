@@ -37,7 +37,7 @@
       :max="
         nResults[0] * 300 > viewportWidth
           ? nResults[0] * 300 - viewportWidth
-          : nResults[0] * 300 - 300
+          : nResults[0] * 300
       "
       v-model="sliderPosition[0]"
       @input="$emit('changePosition', 0)"
@@ -69,8 +69,8 @@ export default {
     viewportWidth: Number,
   },
   methods: {
-    thisResultInfo(id) {
-      this.$emit('thisResultInfo', id)
+    thisResultInfo(result) {
+      this.$emit('thisResultInfo', result)
     },
   },
 }

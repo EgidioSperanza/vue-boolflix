@@ -8,7 +8,7 @@
           v-for="film in filteredPopularFilms"
           :key="film.id"
         >
-          <result-card :result="film" :resultTrendCast="resultTrendCast" @thisResultInfo="thisResultInfo"/>
+          <result-card :result="film" @thisResultInfo="thisResultInfo"/>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
           v-for="serie in filteredPopularSeries"
           :key="serie.id"
         >
-          <result-card :result="serie" :resultTrendCast="resultTrendCast" @thisResultInfo="thisResultInfo"/>
+          <result-card :result="serie" @thisResultInfo="thisResultInfo"/>
         </div>
       </div>
     </div>
@@ -72,8 +72,8 @@ export default {
     viewportWidth: Number,
   },
   methods: {
-    thisResultInfo(id){
-      this.$emit('thisResultInfo', id)
+    thisResultInfo(result){
+      this.$emit('thisResultInfo', result)
     },
   },
 }

@@ -13,6 +13,11 @@ body {
   min-height: 100vh;
 }
 
+#app{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 h1,h2 {
   padding: 20px 100px;
   color: $title-color;
@@ -25,4 +30,10 @@ h1,h2 {
 input[type='text']:focus,
 textarea:focus {
   outline: none;
+}
+
+.info{
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }

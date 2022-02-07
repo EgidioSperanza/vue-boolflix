@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="more-info">
-        <button @click="$emit('thisResultInfo', result)">Vai alla Scheda Film</button>
+        <button @click="$emit('thisResultInfo', result)">Vai alla scheda Info</button>
       </div>
     </div>
     <img

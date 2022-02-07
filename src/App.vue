@@ -1,35 +1,38 @@
 <template>
   <div id="app">
     <div v-if="!isShowingInfo">
-    <header-app @searchResult="searchResult" />
-    <main-container
-      :filteredFilmsList="filteredFilmsList"
-      :filteredSeriesList="filteredSeriesList"
-      :resultCast="resultCast"
-      :msgNoResult="msgNoResult"
-      :nResults="nResults"
-      :sliderPosition="sliderPosition"
-      :position="position"
-      :viewportWidth="viewportWidth"
-      @changePosition="changePosition"
-      @thisResultInfo="thisResultInfo"
-    />
-    <popular-trend
-      :filteredPopularFilms="filteredPopularFilms"
-      :filteredPopularSeries="filteredPopularSeries"
-      :resultTrendCast="resultTrendCast"
-      :nResults="nResults"
-      :sliderPosition="sliderPosition"
-      :position="position"
-      :viewportWidth="viewportWidth"
-      @changePosition="changePosition"
-      @thisResultInfo="thisResultInfo"
-    />
+      <header-app @searchResult="searchResult" />
+      <main-container
+        :filteredFilmsList="filteredFilmsList"
+        :filteredSeriesList="filteredSeriesList"
+        :resultCast="resultCast"
+        :msgNoResult="msgNoResult"
+        :nResults="nResults"
+        :sliderPosition="sliderPosition"
+        :position="position"
+        :viewportWidth="viewportWidth"
+        @changePosition="changePosition"
+        @thisResultInfo="thisResultInfo"
+      />
+      <popular-trend
+        :filteredPopularFilms="filteredPopularFilms"
+        :filteredPopularSeries="filteredPopularSeries"
+        :resultTrendCast="resultTrendCast"
+        :nResults="nResults"
+        :sliderPosition="sliderPosition"
+        :position="position"
+        :viewportWidth="viewportWidth"
+        @changePosition="changePosition"
+        @thisResultInfo="thisResultInfo"
+      />
     </div>
     <div class="info" v-else>
-      <single-card-info :result="result"/>
-      ciao sono {{result.id}}
-      <button @click="goBack">Torna indietro</button>
+      <single-card-info
+        :result="result"
+        :resultTrendCast="resultTrendCast"
+        :resultCast="resultCast"
+        @goBack="goBack"
+      />
     </div>
   </div>
 </template>
@@ -47,7 +50,7 @@ export default {
     HeaderApp,
     MainContainer,
     PopularTrend,
-    SingleCardInfo
+    SingleCardInfo,
   },
   data() {
     return {
@@ -62,9 +65,9 @@ export default {
       nResults: [0, 0, 0],
       sliderPosition: [1, 1, 1],
       position: [0, 0, 0],
-      viewportWidth: window.innerWidth - 60, //Slider margin
-      isShowingInfo:false,
-      result:{},
+      viewportWidth: window.innerWidth - 160, //Slider margin
+      isShowingInfo: false,
+      result: {},
     }
   },
   // //DEBUG
@@ -204,14 +207,15 @@ export default {
         this.position[0] = this.sliderPosition[0]
       }
     },
-     thisResultInfo(result){
-       this.isShowingInfo=true
-       this.result=result
-     },
-     goBack(){
-       this.isShowingInfo=false
-       this.currentId=0
-     }
+    thisResultInfo(result) {
+      this.isShowingInfo = true
+      this.result = result
+    },
+    goBack() {
+      this.isShowingInfo = false
+      this.result = {}
+      this.cast = {}
+    },
   },
   mounted() {
     // AUTOMATIC-DEFAULT PAGE FILLING WITH TWO LISTS REGARDING TREND FILMS AND TV SERIES
@@ -249,5 +253,4 @@ export default {
 
 <style lang="scss">
 @import './style/main.scss';
-@import './style/current-info.scss';
 </style>
